@@ -1,0 +1,306 @@
+{
+  "info": {
+    "_postman_id": "940a4df5-cb0e-4b24-b096-ba7da7dcc65a",
+    "name": "clash of minds",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53758374",
+    "_collection_link": "https://go.postman.co/collection/53758374-940a4df5-cb0e-4b24-b096-ba7da7dcc65a?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "POST Register",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"username\": \"zeidan\",\r\n  \"password\": \"Aa12345678\",\r\n  \"email\": \"zeidan@test.com\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api.clashofminds.net/api/auth/register",
+          "protocol": "https",
+          "host": [
+            "api",
+            "clashofminds",
+            "net"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "LOGIN",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"username\": \"zeidan\",\r\n  \"password\": \"Aa12345678\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api.clashofminds.net/api/auth/login",
+          "protocol": "https",
+          "host": [
+            "api",
+            "clashofminds",
+            "net"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Oyun Oturumu Oluşturma",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTc3NTM0MjE1NywiZXhwIjoxNzc1OTQ2OTU3fQ.NHU9hdeszlIeSpT1LZLp4AWYygRnIq8UfE4f1Vvblf0",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"gameName\": \"Demo Game\",\r\n  \"playerCount\": 2,\r\n  \"team1Name\": \"Red\",\r\n  \"team2Name\": \"Blue\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api.clashofminds.net/api/games",
+          "protocol": "https",
+          "host": [
+            "api",
+            "clashofminds",
+            "net"
+          ],
+          "path": [
+            "api",
+            "games"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Kategori Listeleme",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTc3NTM0MjE1NywiZXhwIjoxNzc1OTQ2OTU3fQ.NHU9hdeszlIeSpT1LZLp4AWYygRnIq8UfE4f1Vvblf0",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.clashofminds.net/api/categories",
+          "protocol": "https",
+          "host": [
+            "api",
+            "clashofminds",
+            "net"
+          ],
+          "path": [
+            "api",
+            "categories"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Soru Görüntüleme",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTc3NTM0MjE1NywiZXhwIjoxNzc1OTQ2OTU3fQ.NHU9hdeszlIeSpT1LZLp4AWYygRnIq8UfE4f1Vvblf0",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "GET https://api.clashofminds.net/api/questions",
+          "protocol": "GET https",
+          "host": [
+            "api",
+            "clashofminds",
+            "net"
+          ],
+          "path": [
+            "api",
+            "questions"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Oyunlarımı Görüntüleme",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTc3NTM0MjE1NywiZXhwIjoxNzc1OTQ2OTU3fQ.NHU9hdeszlIeSpT1LZLp4AWYygRnIq8UfE4f1Vvblf0",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"username\": \"3boud\",\r\n  \"password\": \"Aa12345678\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "GET https://api.clashofminds.net/api/games/my-games",
+          "protocol": "GET https",
+          "host": [
+            "api",
+            "clashofminds",
+            "net"
+          ],
+          "path": [
+            "api",
+            "games",
+            "my-games"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Puan Güncelleme",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTc3NTM0MjE1NywiZXhwIjoxNzc1OTQ2OTU3fQ.NHU9hdeszlIeSpT1LZLp4AWYygRnIq8UfE4f1Vvblf0",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"team1Score\": 200,\r\n  \"team2Score\": 0\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api.clashofminds.net/api/games/2/scores",
+          "protocol": "https",
+          "host": [
+            "api",
+            "clashofminds",
+            "net"
+          ],
+          "path": [
+            "api",
+            "games",
+            "2",
+            "scores"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "soru isleme",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTc3NTM0MjE1NywiZXhwIjoxNzc1OTQ2OTU3fQ.NHU9hdeszlIeSpT1LZLp4AWYygRnIq8UfE4f1Vvblf0",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"questionId\": 1,\r\n  \"askedByTeam\": 1,\r\n  \"answeredByTeam\": 1,\r\n  \"isCorrect\": true,\r\n  \"pointsEarned\": 200\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api.clashofminds.net/api/games/2/record-question",
+          "protocol": "https",
+          "host": [
+            "api",
+            "clashofminds",
+            "net"
+          ],
+          "path": [
+            "api",
+            "games",
+            "2",
+            "record-question"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

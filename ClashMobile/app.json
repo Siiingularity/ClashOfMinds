@@ -1,0 +1,51 @@
+{
+  "expo": {
+    "name": "Clash of Minds",
+    "slug": "clash-of-minds",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./src/assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./src/assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1a0a2e"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.clashofminds.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/adaptive-icon.png",
+        "backgroundColor": "#1a0a2e"
+      },
+      "package": "com.clashofminds.app",
+      "permissions": [
+        "android.permission.INTERNET",
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE"
+      ],
+      "versionCode": 1
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#1a0a2e"
+        }
+      ],
+      "expo-font"
+    ],
+    "scheme": "clashofminds",
+    "extra": {
+      "eas": {
+        "projectId": "clash-of-minds-mobile"
+      }
+    }
+  }
+}

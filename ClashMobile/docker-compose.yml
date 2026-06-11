@@ -1,0 +1,133 @@
+version: "3.9"
+
+# ── Clash of Minds — Full Stack Docker Compose ──────────────────────
+# Services:
+#   backend   — Node.js / Express API
+#   mysql     — Primary database
+#   redis     — Caching layer (categories, questions, leaderboard)
+#   rabbitmq  — Message broker (real-time game events)
+
+services:
+
+  # ── MySQL ────────────────────────────────────────────────────────
+  mysql:
+    image: mysql:8.0
+    container_name: clash_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE:      ${MYSQL_DATABASE:-clashofminds}
+      MYSQL_USER:          ${MYSQL_USER:-clashuser}
+      MYSQL_PASSWORD:      ${MYSQL_PASSWORD:-clashpass}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./Back-End/database/init.js:/docker-entrypoint-initdb.d/init.js:ro
+    ports:
+      - "3306:3306"
+    networks:
+      - clash_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-rootpassword}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  # ── Redis ────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: clash_redis
+    restart: unless-stopped
+    command: >
+      redis-server
+      --maxmemory 256mb
+      --maxmemory-policy allkeys-lru
+      --appendonly yes
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - clash_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # ── RabbitMQ ─────────────────────────────────────────────────────
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    container_name: clash_rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-guest}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS:-guest}
+      RABBITMQ_DEFAULT_VHOST: /
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    ports:
+      - "5672:5672"    # AMQP
+      - "15672:15672"  # Management UI
+      - "15674:15674"  # STOMP over WebSocket (for mobile)
+    networks:
+      - clash_network
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # ── Backend API ──────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./Back-End
+      dockerfile: ../Dockerfile
+    container_name: clash_backend
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      NODE_ENV:        production
+      PORT:            3001
+      DB_HOST:         mysql
+      DB_PORT:         3306
+      DB_NAME:         ${MYSQL_DATABASE:-clashofminds}
+      DB_USER:         ${MYSQL_USER:-clashuser}
+      DB_PASS:         ${MYSQL_PASSWORD:-clashpass}
+      REDIS_URL:       redis://redis:6379
+      RABBITMQ_URL:    amqp://${RABBITMQ_USER:-guest}:${RABBITMQ_PASS:-guest}@rabbitmq:5672
+      JWT_SECRET:      ${JWT_SECRET:-supersecretjwtkey}
+      FRONTEND_URL:    ${FRONTEND_URL:-https://clashofminds.net}
+    ports:
+      - "3001:3001"
+    networks:
+      - clash_network
+    volumes:
+      - ./Back-End/src:/app/src:ro
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3001/health"]
+      interval: 20s
+      timeout: 10s
+      retries: 3
+
+# ── Networks ─────────────────────────────────────────────────────────
+networks:
+  clash_network:
+    driver: bridge
+    name: clash_of_minds_network
+
+# ── Volumes ──────────────────────────────────────────────────────────
+volumes:
+  mysql_data:
+    name: clash_mysql_data
+  redis_data:
+    name: clash_redis_data
+  rabbitmq_data:
+    name: clash_rabbitmq_data
