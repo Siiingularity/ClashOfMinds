@@ -1,0 +1,65 @@
+name: Clash of Minds CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  backend-install:
+    name: Backend Install Check
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: Back-End
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install backend dependencies
+        run: npm install
+
+  mobile-install:
+    name: Mobile Install Check
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ClashMobile
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install mobile dependencies
+        run: npm install --legacy-peer-deps
+
+  docker-build:
+    name: Docker Build Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Docker compose config check
+        run: docker compose config
+
+      - name: Build backend Docker image
+        run: docker compose build backend
+
